@@ -209,6 +209,7 @@
             this.butGo.TabIndex = 7;
             this.butGo.Text = "Solve";
             this.butGo.UseVisualStyleBackColor = true;
+            this.butGo.Click += new System.EventHandler(this.butGo_Click);
             // 
             // Form1
             // 

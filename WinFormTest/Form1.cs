@@ -21,6 +21,8 @@ namespace WinFormTest
 
         private FieldElement mFillElement = FieldElement.Empty;
 
+        private MazeSolver mSolver = null;
+
         public Form1()
         {
 
@@ -127,6 +129,21 @@ namespace WinFormTest
                 }
             }
 
+
+            if(mSolver != null)
+            {
+                if(mSolver.mSolutions.Count > 0)
+                {
+                    foreach(FieldCoord coord in mSolver.mSolutions[0])
+                    {
+                        if(mFieldGrid.GetCell(coord.Row, coord.Col) == FieldElement.Empty)
+                        {
+                            gr.FillRectangle(Brushes.Yellow, coord.Col * mSquareSizeX, coord.Row * mSquareSizeY,
+                                    mSquareSizeX, mSquareSizeY);
+                        }
+                    }
+                }
+            }
         }
 
         private void panGrid_MouseDown(object sender, MouseEventArgs e)
@@ -179,6 +196,15 @@ namespace WinFormTest
                 }
 
             }
+        }
+
+        private void butGo_Click(object sender, EventArgs e)
+        {
+            mSolver = new MazeSolver(mFieldGrid);
+
+            mSolver.Solve();
+
+            panGrid.Invalidate();
         }
     }
 }
