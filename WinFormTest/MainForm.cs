@@ -5,7 +5,7 @@ using System.IO;
 
 namespace WinFormTest
 {
-    public partial class Form1 : Form
+    public partial class MainForm : Form
     {
         private int mRows;
         private int mCols;
@@ -18,7 +18,7 @@ namespace WinFormTest
 
         private MazeSolver mSolver = null;
 
-        public Form1()
+        public MainForm()
         {
 
             InitializeComponent();
@@ -127,9 +127,9 @@ namespace WinFormTest
 
             if (mSolver != null)
             {
-                if (mSolver.mSolutions.Count > 0)
+                if (mSolver.GetSolutions().Count > 0)
                 {
-                    foreach (FieldCoord coord in mSolver.mSolutions[0])
+                    foreach (FieldCoord coord in mSolver.GetSolutions()[0])
                     {
                         if (mFieldGrid.GetCell(coord.Row, coord.Col) == FieldElement.Empty)
                         {
@@ -341,6 +341,25 @@ namespace WinFormTest
         {
             mSolver = null;
             panGrid.Invalidate();
+
+        }
+
+        private void txtCols_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            if(e.KeyChar == '\r')
+            {
+                e.Handled = true;
+                txtCols_Leave(sender, e);
+            }
+        }
+
+        private void txtRows_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            if (e.KeyChar == '\r')
+            {
+                e.Handled = true;
+                txtRows_Leave(sender, e);
+            }
 
         }
     }

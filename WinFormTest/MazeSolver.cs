@@ -10,12 +10,17 @@ namespace WinFormTest
         private FieldCoord mStart = null;
         private FieldCoord mFinish = null;
 
-        public List<List<FieldCoord>> mSolutions;
+        private List<List<FieldCoord>> mSolutions;
 
         public MazeSolver(FieldGrid fieldgrid)
         {
             mGrid = fieldgrid;
             mSolutions = new List<List<FieldCoord>>();
+        }
+
+        public List<List<FieldCoord>> GetSolutions()
+        {
+            return mSolutions;
         }
 
         private FieldCoord FindFieldElement(FieldElement element)
