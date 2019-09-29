@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace WinFormTest
+﻿namespace WinFormTest
 {
 
     public enum FieldElement { Empty = 0, Wall = 1, Start = 2, Finish = 3};

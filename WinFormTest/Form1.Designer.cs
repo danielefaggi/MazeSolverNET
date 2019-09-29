@@ -44,6 +44,7 @@
             this.butGo = new System.Windows.Forms.Button();
             this.butSave = new System.Windows.Forms.Button();
             this.butLoad = new System.Windows.Forms.Button();
+            this.butClear = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
@@ -116,6 +117,7 @@
             // 
             // panToolbox
             // 
+            this.panToolbox.Controls.Add(this.butClear);
             this.panToolbox.Controls.Add(this.butLoad);
             this.panToolbox.Controls.Add(this.butSave);
             this.panToolbox.Controls.Add(this.butGo);
@@ -217,7 +219,7 @@
             // 
             // butSave
             // 
-            this.butSave.Location = new System.Drawing.Point(57, 320);
+            this.butSave.Location = new System.Drawing.Point(57, 339);
             this.butSave.Name = "butSave";
             this.butSave.Size = new System.Drawing.Size(104, 23);
             this.butSave.TabIndex = 8;
@@ -227,13 +229,23 @@
             // 
             // butLoad
             // 
-            this.butLoad.Location = new System.Drawing.Point(57, 350);
+            this.butLoad.Location = new System.Drawing.Point(57, 369);
             this.butLoad.Name = "butLoad";
             this.butLoad.Size = new System.Drawing.Size(104, 23);
             this.butLoad.TabIndex = 9;
             this.butLoad.Text = "Load";
             this.butLoad.UseVisualStyleBackColor = true;
             this.butLoad.Click += new System.EventHandler(this.butLoad_Click);
+            // 
+            // butClear
+            // 
+            this.butClear.Location = new System.Drawing.Point(57, 293);
+            this.butClear.Name = "butClear";
+            this.butClear.Size = new System.Drawing.Size(104, 23);
+            this.butClear.TabIndex = 10;
+            this.butClear.Text = "Clear";
+            this.butClear.UseVisualStyleBackColor = true;
+            this.butClear.Click += new System.EventHandler(this.butClear_Click);
             // 
             // Form1
             // 
@@ -272,6 +284,7 @@
         private System.Windows.Forms.Button butGo;
         private System.Windows.Forms.Button butLoad;
         private System.Windows.Forms.Button butSave;
+        private System.Windows.Forms.Button butClear;
     }
 }
 
