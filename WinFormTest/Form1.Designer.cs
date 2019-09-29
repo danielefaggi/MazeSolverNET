@@ -42,6 +42,8 @@
             this.radStart = new System.Windows.Forms.RadioButton();
             this.radFinish = new System.Windows.Forms.RadioButton();
             this.butGo = new System.Windows.Forms.Button();
+            this.butSave = new System.Windows.Forms.Button();
+            this.butLoad = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
@@ -78,6 +80,7 @@
             this.vsView.Name = "vsView";
             this.vsView.Size = new System.Drawing.Size(17, 387);
             this.vsView.TabIndex = 0;
+            this.vsView.Visible = false;
             // 
             // hsView
             // 
@@ -87,6 +90,7 @@
             this.hsView.Name = "hsView";
             this.hsView.Size = new System.Drawing.Size(523, 17);
             this.hsView.TabIndex = 1;
+            this.hsView.Visible = false;
             // 
             // panView
             // 
@@ -112,6 +116,8 @@
             // 
             // panToolbox
             // 
+            this.panToolbox.Controls.Add(this.butLoad);
+            this.panToolbox.Controls.Add(this.butSave);
             this.panToolbox.Controls.Add(this.butGo);
             this.panToolbox.Controls.Add(this.radFinish);
             this.panToolbox.Controls.Add(this.radStart);
@@ -184,7 +190,6 @@
             this.radStart.Name = "radStart";
             this.radStart.Size = new System.Drawing.Size(104, 24);
             this.radStart.TabIndex = 5;
-            this.radStart.TabStop = true;
             this.radStart.Text = "Place Start";
             this.radStart.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.radStart.UseVisualStyleBackColor = true;
@@ -196,20 +201,39 @@
             this.radFinish.Name = "radFinish";
             this.radFinish.Size = new System.Drawing.Size(104, 24);
             this.radFinish.TabIndex = 6;
-            this.radFinish.TabStop = true;
             this.radFinish.Text = "Place Finish";
             this.radFinish.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.radFinish.UseVisualStyleBackColor = true;
             // 
             // butGo
             // 
-            this.butGo.Location = new System.Drawing.Point(57, 308);
+            this.butGo.Location = new System.Drawing.Point(57, 263);
             this.butGo.Name = "butGo";
             this.butGo.Size = new System.Drawing.Size(104, 23);
             this.butGo.TabIndex = 7;
             this.butGo.Text = "Solve";
             this.butGo.UseVisualStyleBackColor = true;
             this.butGo.Click += new System.EventHandler(this.butGo_Click);
+            // 
+            // butSave
+            // 
+            this.butSave.Location = new System.Drawing.Point(57, 320);
+            this.butSave.Name = "butSave";
+            this.butSave.Size = new System.Drawing.Size(104, 23);
+            this.butSave.TabIndex = 8;
+            this.butSave.Text = "Save";
+            this.butSave.UseVisualStyleBackColor = true;
+            this.butSave.Click += new System.EventHandler(this.butSave_Click);
+            // 
+            // butLoad
+            // 
+            this.butLoad.Location = new System.Drawing.Point(57, 350);
+            this.butLoad.Name = "butLoad";
+            this.butLoad.Size = new System.Drawing.Size(104, 23);
+            this.butLoad.TabIndex = 9;
+            this.butLoad.Text = "Load";
+            this.butLoad.UseVisualStyleBackColor = true;
+            this.butLoad.Click += new System.EventHandler(this.butLoad_Click);
             // 
             // Form1
             // 
@@ -246,6 +270,8 @@
         private System.Windows.Forms.RadioButton radStart;
         private System.Windows.Forms.RadioButton radWall;
         private System.Windows.Forms.Button butGo;
+        private System.Windows.Forms.Button butLoad;
+        private System.Windows.Forms.Button butSave;
     }
 }
 

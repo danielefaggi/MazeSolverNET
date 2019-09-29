@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.IO;
 
 namespace WinFormTest
 {
@@ -38,8 +39,8 @@ namespace WinFormTest
 
         private void UpdateGrid()
         {
-            if(mFieldGrid.Cols != mCols) mFieldGrid.Cols = mCols;
-            if(mFieldGrid.Rows != mRows) mFieldGrid.Rows = mRows;
+            if (mFieldGrid.Cols != mCols) mFieldGrid.Cols = mCols;
+            if (mFieldGrid.Rows != mRows) mFieldGrid.Rows = mRows;
 
             panGrid.Width = mSquareSizeX * mFieldGrid.Cols + 1;
             panGrid.Height = mSquareSizeY * mFieldGrid.Rows + 1;
@@ -56,7 +57,7 @@ namespace WinFormTest
         {
             int n = 0;
 
-            if(!int.TryParse(txtCols.Text, out n))
+            if (!int.TryParse(txtCols.Text, out n))
             {
                 txtCols.Text = mCols.ToString();
             }
@@ -107,16 +108,16 @@ namespace WinFormTest
             }
 
 
-            for(int r = 0; r < mFieldGrid.Rows; r++)
+            for (int r = 0; r < mFieldGrid.Rows; r++)
             {
-                for(int c = 0; c < mFieldGrid.Cols; c++)
+                for (int c = 0; c < mFieldGrid.Cols; c++)
                 {
                     if (mFieldGrid.GetCell(r, c) == FieldElement.Wall)
                     {
                         gr.FillRectangle(Brushes.Gray, c * mSquareSizeX, r * mSquareSizeY,
                                                         mSquareSizeX, mSquareSizeY);
                     }
-                    else if(mFieldGrid.GetCell(r, c) == FieldElement.Start)
+                    else if (mFieldGrid.GetCell(r, c) == FieldElement.Start)
                     {
                         gr.FillRectangle(Brushes.Green, c * mSquareSizeX, r * mSquareSizeY,
                                 mSquareSizeX, mSquareSizeY);
@@ -130,13 +131,13 @@ namespace WinFormTest
             }
 
 
-            if(mSolver != null)
+            if (mSolver != null)
             {
-                if(mSolver.mSolutions.Count > 0)
+                if (mSolver.mSolutions.Count > 0)
                 {
-                    foreach(FieldCoord coord in mSolver.mSolutions[0])
+                    foreach (FieldCoord coord in mSolver.mSolutions[0])
                     {
-                        if(mFieldGrid.GetCell(coord.Row, coord.Col) == FieldElement.Empty)
+                        if (mFieldGrid.GetCell(coord.Row, coord.Col) == FieldElement.Empty)
                         {
                             gr.FillRectangle(Brushes.Yellow, coord.Col * mSquareSizeX, coord.Row * mSquareSizeY,
                                     mSquareSizeX, mSquareSizeY);
@@ -151,7 +152,7 @@ namespace WinFormTest
             int r = e.Y / mSquareSizeY;
             int c = e.X / mSquareSizeX;
 
-            if(r < mFieldGrid.Rows && c < mFieldGrid.Cols)
+            if (r < mFieldGrid.Rows && c < mFieldGrid.Cols)
             {
                 if (radWall.Checked)
                 {
@@ -165,13 +166,13 @@ namespace WinFormTest
                         mFieldGrid.SetCell(r, c, FieldElement.Empty);
                         mFillElement = FieldElement.Empty;
                     }
-                } 
-                else if(radStart.Checked)
+                }
+                else if (radStart.Checked)
                 {
                     mFieldGrid.ClearCells(FieldElement.Start);
                     mFieldGrid.SetCell(r, c, FieldElement.Start);
                 }
-                else if(radFinish.Checked)
+                else if (radFinish.Checked)
                 {
                     mFieldGrid.ClearCells(FieldElement.Finish);
                     mFieldGrid.SetCell(r, c, FieldElement.Finish);
@@ -179,7 +180,7 @@ namespace WinFormTest
 
                 panGrid.Invalidate();
             }
-        }        
+        }
 
         private void panGrid_MouseMove(object sender, MouseEventArgs e)
         {
@@ -203,6 +204,141 @@ namespace WinFormTest
             mSolver = new MazeSolver(mFieldGrid);
 
             mSolver.Solve();
+
+            panGrid.Invalidate();
+        }
+
+        private void butSave_Click(object sender, EventArgs e)
+        {
+            using (SaveFileDialog sfd = new SaveFileDialog())
+            {
+                sfd.Title = "Save maze definition file";
+                sfd.Filter = "Maze file (*.maze)|*.maze";
+                if (sfd.ShowDialog(this) == DialogResult.OK)
+                {
+                    using (StreamWriter sw = new StreamWriter(sfd.FileName))
+                    {
+                        sw.WriteLine("Maze 1.0");
+                        sw.WriteLine(mFieldGrid.Rows.ToString());
+                        sw.WriteLine(mFieldGrid.Cols.ToString());
+
+                        int i = 1;
+                        for (int r = 0; r < mFieldGrid.Rows; r++)
+                        {
+                            for (int c = 0; c < mFieldGrid.Cols; c++)
+                            {
+                                byte val = 0;
+                                FieldElement elem = mFieldGrid.GetCell(r, c);
+                                if (elem == FieldElement.Wall)
+                                {
+                                    val = 1;
+                                }
+                                else if (elem == FieldElement.Start)
+                                {
+                                    val = 2;
+                                }
+                                else if (elem == FieldElement.Finish)
+                                {
+                                    val = 3;
+                                }
+                                sw.Write(val);
+                                if (++i >= 40)
+                                {
+                                    i = 1;
+                                    sw.WriteLine();
+                                }
+                            }
+                        }
+
+                        sw.Close();
+                    }
+                }
+            }
+        }
+
+        private void butLoad_Click(object sender, EventArgs e)
+        {
+            using (OpenFileDialog ofd = new OpenFileDialog())
+            {
+                ofd.Title = "Load maze definition file";
+                ofd.Filter = "Maze file (*.maze)|*.maze";
+                if (ofd.ShowDialog(this) == DialogResult.OK)
+                {
+                    using (StreamReader sr = new StreamReader(ofd.FileName))
+                    {
+                        String line;
+
+                        line = sr.ReadLine();
+                        if (!line.Equals("Maze 1.0"))
+                        {
+                            sr.Close();
+                            return;
+                        }
+
+                        int rows = 0;
+                        line = sr.ReadLine();
+                        if (!int.TryParse(line, out rows))
+                        {
+                            sr.Close();
+                            return;
+                        }
+
+                        int cols = 0;
+                        line = sr.ReadLine();
+                        if (!int.TryParse(line, out cols))
+                        {
+                            sr.Close();
+                            return;
+                        }
+                        
+                        mFieldGrid.Rows = rows;
+                        mFieldGrid.Cols = cols;
+
+                        mRows = rows;
+                        mCols = cols;
+                        txtRows.Text = mRows.ToString();
+                        txtCols.Text = mCols.ToString();
+
+                        UpdateGrid();
+
+                        line = sr.ReadLine();
+                        int i = 0;
+                        for (int r = 0; r < mFieldGrid.Rows; r++)
+                        {
+                            for (int c = 0; c < mFieldGrid.Cols; c++)
+                            {
+                                byte val = 0;
+                                byte.TryParse(line.Substring(i, 1), out val);
+
+                                if(val == 1)
+                                {
+                                    mFieldGrid.SetCell(r, c, FieldElement.Wall);
+                                }
+                                else if(val == 2)
+                                {
+                                    mFieldGrid.SetCell(r, c, FieldElement.Start);
+                                }
+                                else if(val == 3)
+                                {
+                                    mFieldGrid.SetCell(r, c, FieldElement.Finish);
+                                }
+                                else
+                                {
+                                    mFieldGrid.SetCell(r, c, FieldElement.Empty);
+                                }
+
+                                if(++i >= line.Length)
+                                {
+                                    line = sr.ReadLine();
+                                    i = 0;
+                                }
+                            }
+                        }
+
+                        sr.Close();
+                    }
+                }
+            }
 
             panGrid.Invalidate();
         }
