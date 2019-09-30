@@ -1,14 +1,24 @@
 ﻿namespace WinFormTest
 {
-
+    /// <summary>
+    /// Emumeration to classify the grid element types
+    /// </summary>
     public enum FieldElement { Empty = 0, Wall = 1, Start = 2, Finish = 3};
 
-    class FieldGrid
+    /// <summary>
+    /// The field grid of cells represeting the maze
+    /// </summary>
+    public class FieldGrid
     {
         private int mCols;
         private int mRows;
         private FieldElement[,] mGrid;
 
+        /// <summary>
+        /// Public constructor 
+        /// </summary>
+        /// <param name="cols">Wanted columns</param>
+        /// <param name="rows">Wanted rows</param>
         public FieldGrid(int cols, int rows)
         {
             mCols = cols;
@@ -17,6 +27,9 @@
             Update();
         }
 
+        /// <summary>
+        /// Number of columns
+        /// </summary>
         public int Cols
         {
             get
@@ -30,6 +43,9 @@
             }
         }
 
+        /// <summary>
+        /// Number of rows
+        /// </summary>
         public int Rows
         {
             get
@@ -43,6 +59,12 @@
             }
         }
 
+        /// <summary>
+        /// Set the cell element type
+        /// </summary>
+        /// <param name="row">Row coordinate</param>
+        /// <param name="col">Column coordinate</param>
+        /// <param name="element">Element to be assigned to cell</param>
         public void SetCell(int row, int col, FieldElement element)
         {
             if (row < mGrid.GetLength(0) && col < mGrid.GetLength(1) && row >= 0 && col >= 0)
@@ -52,6 +74,12 @@
 
         }
 
+        /// <summary>
+        /// Get the cell element type
+        /// </summary>
+        /// <param name="row">Row coordinate</param>
+        /// <param name="col">Column coordinate</param>
+        /// <returns>The element contained in the cell grid</returns>
         public FieldElement GetCell(int row, int col)
         {
             if (row < mGrid.GetLength(0) && col < mGrid.GetLength(1) && row >= 0 && col >= 0)
@@ -64,6 +92,10 @@
             }
         }
 
+        /// <summary>
+        /// Clear the cells of the grid from a specific element
+        /// </summary>
+        /// <param name="element">The element to be cleared</param>
         public void ClearCells(FieldElement element)
         {
             for(int r = 0; r < mGrid.GetLength(0); r++)
@@ -78,6 +110,10 @@
             }
         }
 
+        /// <summary>
+        /// Initialize the grid elements
+        /// </summary>
+        /// <param name="grid">The grid to be processed</param>
         private static void InitGrid(FieldElement[,] grid)
         {
             for (int r = 0; r < grid.GetLength(0); r++)
@@ -90,6 +126,9 @@
 
         }
 
+        /// <summary>
+        /// Update the grid starting from the selected numeber of Rows and Columns
+        /// </summary>
         private void Update()
         {
             FieldElement[,] newgrid = new FieldElement[mRows,mCols];

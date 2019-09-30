@@ -7,15 +7,19 @@ namespace WinFormTest
 {
     public partial class MainForm : Form
     {
+        // Rows, Columns and Grid object
         private int mRows;
         private int mCols;
         private FieldGrid mFieldGrid;
 
+        // Grid Cell size
         private int mSquareSizeX = 10;
         private int mSquareSizeY = 10;
 
+        // Fill element to draw the grid
         private FieldElement mFillElement = FieldElement.Empty;
 
+        // The solver is attached here
         private MazeSolver mSolver = null;
 
         public MainForm()
@@ -23,14 +27,20 @@ namespace WinFormTest
 
             InitializeComponent();
 
+            // Choose the initial grid size
             mRows = 10;
             mCols = 10;
 
+            // Initialize the grid
             mFieldGrid = new FieldGrid(mRows, mCols);
 
+            // Update the grid
             UpdateGrid();
         }
 
+        /// <summary>
+        /// Update the size of the grid
+        /// </summary>
         private void UpdateGrid()
         {
             if (mFieldGrid.Cols != mCols) mFieldGrid.Cols = mCols;
@@ -87,6 +97,11 @@ namespace WinFormTest
 
         }
 
+        /// <summary>
+        /// Paint function to draw the grid
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void panGrid_Paint(object sender, PaintEventArgs e)
         {
             Graphics gr = e.Graphics;
@@ -127,9 +142,9 @@ namespace WinFormTest
 
             if (mSolver != null)
             {
-                if (mSolver.GetSolutions().Count > 0)
+                if (mSolver.GetSortedSolutions().Count > 0)
                 {
-                    foreach (FieldCoord coord in mSolver.GetSolutions()[0])
+                    foreach (FieldCoord coord in mSolver.GetSortedSolutions()[0])
                     {
                         if (mFieldGrid.GetCell(coord.Row, coord.Col) == FieldElement.Empty)
                         {
@@ -193,6 +208,11 @@ namespace WinFormTest
             }
         }
 
+        /// <summary>
+        /// Start the solver
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void butGo_Click(object sender, EventArgs e)
         {
             mSolver = new MazeSolver(mFieldGrid);
@@ -202,6 +222,11 @@ namespace WinFormTest
             panGrid.Invalidate();
         }
 
+        /// <summary>
+        /// Save operation
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void butSave_Click(object sender, EventArgs e)
         {
             using (SaveFileDialog sfd = new SaveFileDialog())
@@ -250,6 +275,11 @@ namespace WinFormTest
             }
         }
 
+        /// <summary>
+        /// Load Operation
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void butLoad_Click(object sender, EventArgs e)
         {
             using (OpenFileDialog ofd = new OpenFileDialog())
